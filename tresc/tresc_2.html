@@ -1,0 +1,166 @@
+        <div id="page-content" class="row pb-3 d-print-block">
+            <div id="region-main-box" class="col-12">
+
+                <section id="region-main">
+                    <div class="card">
+                        <div class="card-body">
+                            <span class="notifications" id="user-notifications"></span>
+                            <div role="main"><span id="maincontent"></span><h2>Duże zadanie, część 2</h2><div id="intro" class="box py-3 generalbox boxaligncenter"><div class="no-overflow"><p>Jako drugą część zadania należy zaimplementować kalkulator działający na
+wielomianach i stosujący odwrotną notację polską.</p>
+
+<h3>Kalkulator</h3>
+
+<p>Program kalkulatora czyta dane wierszami ze standardowego wejścia.
+Wiersz zawiera wielomian lub polecenie do wykonania.</p>
+
+<p>Wielomian reprezentujemy jako stałą, jednomian lub sumę jednomianów.
+Stała jest liczbą całkowitą.
+Jednomian reprezentujemy jako parę <code>(coeff,exp)</code>, gdzie współczynnik <code>coeff</code>
+jest wielomianem, a wykładnik <code>exp</code> jest liczbą nieujemną.
+Do wyrażenia sumy używamy znaku <code>+</code>.
+Jeśli wiersz zawiera wielomian, to program wstawia go na stos.
+Przykłady poprawnych wielomianów:</p>
+
+<pre><code>0
+1
+-2
+(0,0)
+(1,0)
+(-2,0)
+(1,1)
+(1,0)+(1,2)
+(1,2)+(1,0)
+(1,2)+(-1,2)
+(1,2)+(-2,2)
+((1,2),15)+(-7,8)
+(3,1)+(((4,4),100),2)
+</code></pre>
+
+<p>Kalkulator wykonuje następujące polecenia:</p>
+
+<ul>
+<li><code>ZERO</code> – wstawia na wierzchołek stosu wielomian tożsamościowo równy zeru;</li>
+<li><code>IS_COEFF</code> – sprawdza, czy wielomian na wierzchołku stosu jest
+współczynnikiem – wypisuje na standardowe wyjście 0 lub 1;</li>
+<li><code>IS_ZERO</code> – sprawdza, czy wielomian na wierzchołku stosu jest tożsamościowo
+równy zeru – wypisuje na standardowe wyjście 0 lub 1;</li>
+<li><code>CLONE</code> – wstawia na stos kopię wielomianu z wierzchołka;</li>
+<li><code>ADD</code> – dodaje dwa wielomiany z wierzchu stosu, usuwa je i wstawia na
+wierzchołek stosu ich sumę;</li>
+<li><code>MUL</code> – mnoży dwa wielomiany z wierzchu stosu, usuwa je i wstawia na
+wierzchołek stosu ich iloczyn;</li>
+<li><code>NEG</code> – neguje wielomian na wierzchołku stosu;</li>
+<li><code>SUB</code> – odejmuje od wielomianu z wierzchołka wielomian pod wierzchołkiem,
+usuwa je i wstawia na wierzchołek stosu różnicę;</li>
+<li><code>IS_EQ</code> – sprawdza, czy dwa wielomiany na wierzchu stosu są równe – wypisuje
+na standardowe wyjście 0 lub 1;</li>
+<li><code>DEG</code> – wypisuje na standardowe wyjście stopień wielomianu (−1 dla
+wielomianu tożsamościowo równego zeru);</li>
+<li><code>DEG_BY idx</code> – wypisuje na standardowe wyjście stopień wielomianu ze względu
+na zmienną o numerze <code>idx</code> (−1 dla wielomianu tożsamościowo równego zeru);</li>
+<li><code>AT x</code> – wylicza wartość wielomianu w punkcie <code>x</code>, usuwa wielomian
+z wierzchołka i wstawia na stos wynik operacji;</li>
+<li><code>PRINT</code> – wypisuje na standardowe wyjście wielomian z wierzchołka stosu;</li>
+<li><code>POP</code> – usuwa wielomian z wierzchołka stosu.</li>
+</ul>
+
+<p>Wypisywany poleceniem <code>PRINT</code> wielomian powinien mieć jak najprostszą postać.
+Wykładniki wypisywanych jednomianów nie powinny się powtarzać.
+Jednomiany powinny być posortowane rosnąco według wykładników.
+Podane wyżej wielomiany powinny zostać wypisane następująco:</p>
+
+<pre><code>0
+1
+-2
+0
+1
+-2
+(1,1)
+(1,0)+(1,2)
+(1,0)+(1,2)
+0
+(-1,2)
+(-7,8)+((1,2),15)
+(3,1)+(((4,4),100),2)
+</code></pre>
+
+<h3>Sprawdzanie poprawności danych wejściowych i obsługa błędów</h3>
+
+<p>Program nie powinien zakładać maksymalnej długości wiersza.
+Poprawny wiersz nie zawiera żadnych dodatkowych białych znaków oprócz
+pojedynczej spacji separującej parametr poleceń <code>AT</code> i <code>DEG_BY</code> od polecenia.
+Program wypisuje komunikaty o błędach na standardowe wyjście błędów.
+Poniżej <code>w</code> oznacza numer wiersza, a <code>\n</code> – znak przejścia do nowego wiersza.
+Wiersze i kolumny numerujemy od 1.</p>
+
+<p>Ignorujemy wiersze zaczynające się znakiem <code>#</code> i puste.
+Jeśli wiersz zaczyna się małą lub wielką literą alfabetu angielskiego, to
+uznajemy, że zawiera polecenie.
+W pozostałych przypadkach uznajemy, że wiersz opisuje wielomian.</p>
+
+<p>Jeśli program wykryje niepoprawną nazwę polecenia, wypisuje:</p>
+
+<pre><code>ERROR w WRONG COMMAND\n
+</code></pre>
+
+<p>Jeśli w poleceniu <code>DEG_BY</code> nie podano parametru lub jest on niepoprawny, program
+wypisuje:</p>
+
+<pre><code>ERROR w DEG BY WRONG VARIABLE\n
+</code></pre>
+
+<p>Jeśli w poleceniu <code>AT</code> nie podano parametru lub jest on niepoprawny, program
+wypisuje:</p>
+
+<pre><code>ERROR w AT WRONG VALUE\n
+</code></pre>
+
+<p>Jeśli na stosie jest za mało wielomianów, aby wykonać polecenie, program
+wypisuje:</p>
+
+<pre><code>ERROR w STACK UNDERFLOW\n
+</code></pre>
+
+<p>Jeśli program wykryje błąd podczas parsowania wielomianu, wypisuje</p>
+
+<pre><code>ERROR w WRONG POLY\n
+</code></pre>
+
+<p>Wartość współczynnika jednomianu lub parametru polecenia <code>AT</code> uznajemy za
+niepoprawną, jeśli jest mniejsza od  <code>-9223372036854775808</code> lub większa
+od <code>9223372036854775807</code>.</p>
+
+<p>Wartość wykładnika jednomianu uznajemy za niepoprawną, jeśli jest mniejsza
+od <code>0</code> lub większa od <code>2147483647</code>.</p>
+
+<p>Wartość parametru polecenia <code>DEG_BY</code> uznajemy za niepoprawną, jeśli jest
+mniejsza od <code>0</code> lub większa od <code>18446744073709551615</code>.</p>
+
+<p>Program może, ale nie musi, akceptować liczby z dodatkowymi wiodącymi zerami.
+Znak <code>+</code> służy tylko do wyrażania sumy jednomianów i nie może poprzedzać liczby.</p>
+
+<h3>Przykłady użycia</h3>
+
+<p>Do treści zadania dołączone jest archiwum z przykładami użycia.</p>
+
+<h3>Rozwiązanie</h3>
+
+<p>Rozwiązanie części 2 zadania powinno korzystać z własnego rozwiązania części 1.
+Jako rozwiązanie części 2 zadania wymagamy:</p>
+
+<ul>
+<li>umieszczenia kodu źródłowego implementacji w katalogu <code>src</code>,</li>
+<li>uzupełnienia dokumentacji dla programu <code><a class="autolink" title="Doxygen" href="https://moodle.mimuw.edu.pl/mod/page/view.php?id=45341">doxygen</a></code>,</li>
+<li>dostosowania pliku konfiguracyjnego dla programu <code><a class="autolink" title="CMake" href="https://moodle.mimuw.edu.pl/mod/page/view.php?id=45340">cmake</a></code>.</li>
+</ul>
+
+<p>Obowiązują wymagania sformułowane w punkcie „Wymagamy” w treści pierwszej
+części zadania.
+Zmieniamy jedno wymaganie: teraz funkcja <code>main</code> powinna być zawarta
+w pliku <code>src/calc.c</code>.
+Plik <code>src/poly_example.c</code> może pozostać niezmieniony.
+Pozostawiamy natomiast wymaganie, że w wyniku kompilacji powinien powstać plik
+wykonywalny <code>poly</code>.</p>
+
+<p>Obowiązują wymagania sformułowane w punkcie „Obsługa błędów krytycznych”
+w treści pierwszej części zadania.</p>

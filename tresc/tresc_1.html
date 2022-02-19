@@ -1,0 +1,151 @@
+        <div id="page-content" class="row pb-3 d-print-block">
+            <div id="region-main-box" class="col-12">
+
+                <section id="region-main">
+                    <div class="card">
+                        <div class="card-body">
+                            <span class="notifications" id="user-notifications"></span>
+                            <div role="main"><span id="maincontent"></span><h2>Duże zadanie, część 1</h2><div id="intro" class="box py-3 generalbox boxaligncenter"><div class="no-overflow"><span class="filter_mathjaxloader_equation"><span class="nolink"><h2>Wielomiany</h2>
+
+<p>Tegoroczne duże zadanie polega na zaimplementowaniu operacji na wielomianach
+rzadkich wielu zmiennych o współczynnikach całkowitych.
+Zmienne wielomianu oznaczamy $x_0$, $x_1$, $x_2$ itd.
+Definicja wielomianu jest rekurencyjna.
+Wielomian jest sumą jednomianów postaci $px_0^n$, gdzie $n$ jest
+wykładnikiem tego jednomianu będącym nieujemną liczbą całkowitą, a $p$ jest
+współczynnikiem, który jest wielomianem.
+Współczynnik w jednomianie zmiennej $x_i$ jest sumą jednomianów zmiennej
+$x_{i+1}$.
+Rekurencja kończy się, gdy współczynnik jest liczbą (czyli wielomianem stałym),
+a nie sumą kolejnych jednomianów.
+Wykładniki jednomianów w każdej z rozważanych sum są parami różne.
+Wielomiany są rzadkie, co oznacza, że stopień wielomianu może być znacznie
+większy niż liczba składowych jednomianów.</p>
+
+<h2>Część 1 zadania</h2>
+
+<p>Jako pierwszą część zadania należy zaimplementować bibliotekę podstawowych
+operacji na wielomianach rzadkich wielu zmiennych. Opis funkcji znajduje się
+w pliku <code>poly.h</code> w formacie komentarzy dla programu <code>doxygen</code>.</p>
+
+<h3>Dostarczamy</h3>
+
+<p>W repozytorium <code>https://git.mimuw.edu.pl/IPP-login.git</code> (gdzie <code>login</code> to
+identyfikator używany do logowania w laboratorium komputerowym) znajduje się
+szablon implementacji rozwiązania tego zadania. Znajdują się tam następujące
+pliki:</p>
+
+<ul>
+<li><code>src/poly.h</code> – deklaracja interfejsu biblioteki wraz z jej dokumentacją
+w formacie <code>doxygen</code>,</li>
+<li><code>src/poly_example.c</code> – przykłady użycia biblioteki,</li>
+<li><code>CMakeLists.txt</code> – plik konfiguracyjny programu <code>cmake</code>,</li>
+<li><code>Doxyfile.in</code> – plik konfiguracyjny programu <code>doxygen</code>,</li>
+<li><code>MainPage.dox</code> – strona główna dokumentacji w formacie <code>doxygen</code>.</li>
+</ul>
+
+<p>Zastrzegamy sobie możliwość nanoszenia poprawek do tego szablonu.
+Będziemy je umieszczać gałęzi <code>template/part1</code>.</p>
+
+<h3>Wymagamy</h3>
+
+<p>Jako rozwiązanie części 1 zadania wymagamy:</p>
+
+<ul>
+<li>ewentualnego uzupełnienia implementacji lub rozszerzenia interfejsu biblioteki
+w pliku <code>src/poly.h</code>,</li>
+<li>stworzenia pliku <code>src/poly.c</code> z implementacją wymaganych funkcji,</li>
+<li>uzupełnienia dokumentacji w formacie <code>doxygen</code> tak, aby była przydatna dla
+programistów rozwijających moduł.</li>
+</ul>
+
+<p>Powinna być możliwość skompilowania rozwiązania w dwóch wersjach: release
+i debug. Wersję release kompiluje się za pomocą sekwencji poleceń:</p>
+
+<pre><code class="sh">mkdir release
+cd release
+cmake ..
+make
+make doc
+</code></pre>
+
+<p>Wersję debug kompiluje się za pomocą sekwencji poleceń:</p>
+
+<pre><code class="sh">mkdir debug
+cd debug
+cmake -D CMAKE_BUILD_TYPE=Debug ..
+make
+make doc
+</code></pre>
+
+<p>W wyniku kompilacji odpowiednio w katalogu <code>release</code> lub <code>debug</code> powinien
+powstać plik wykonywalny <code>poly</code> oraz dokumentacja.
+W poleceniu <code>cmake</code> powinno być również możliwe jawne określenie wariantu
+release budowania pliku wynikowego:</p>
+
+<pre><code class="sh">cmake -D CMAKE_BUILD_TYPE=Release ..
+</code></pre>
+
+<p>Zawartość dostarczonych przez nas plików można modyfikować, o ile nie zmienia to
+interfejsu biblioteki i zachowuje wymagania podane w treści zadania, przy czym
+nie wolno usuwać opcji kompilacji: <code>-std=c11 -Wall -Wextra</code>. Zmiany mogą
+dotyczyć np. stylu, dokumentacji, deklaracji typedef, włączania plików
+nagłówkowych, implementacji funkcji jako <code>static inline</code>. Ewentualne dodatkowe
+pliki źródłowe, będące częścią rozwiązania, należy umieścić w katalogu <code>src</code>.
+Funkcja <code>main</code> programu musi znajdować się w pliku <code>src/poly_example.c</code>, ale
+zawartość tego pliku nie będzie oceniana w tej części zadania.</p>
+
+<h3>Dodatkowe wymagania i ustalenia</h3>
+
+<p>Rozwiązanie zadania powinno być napisane w języku C i korzystać z dynamicznie
+alokowanych struktur danych. Implementacja powinna być jak najefektywniejsza.
+Należy unikać zbędnego alokowania pamięci i kopiowania danych.</p>
+
+<p>W interfejsie zostały przyjęte pewne konwencje, które mają ułatwić zarządzanie
+pamięcią. Dzięki tym konwencjom wiadomo, co jest właścicielem obiektu. Bycie
+właścicielem obiektu implikuje odpowiedzialność za zwolnienie używanej przez
+niego pamięci. W przypadku struktur <code>Poly</code> i <code>Mono</code> zwalnianie pamięci uzyskuje
+się poprzez wywołania odpowiednio funkcji <code>PolyDestroy</code> i <code>MonoDestroy</code>.</p>
+
+<p>Podstawową konwencją jest <em>przekazywanie argumentów przez zmienną</em>. W języku C
+do tego celu użyty jest typ wskaźnikowy (np. <code>const Poly *</code>). Kod wołający
+funkcję, której przekazujemy argument przez zmienną, odpowiada za utworzenie
+odpowiedniego wskaźnika. Może to być wskaźnik na lokalną zmienną, bądź też
+wskaźnik uzyskany w wyniku alokacji pamięci na stercie (np. przez <code>malloc</code>).
+W tym drugim wypadku trzeba pamiętać, aby zwolnić tę pamięć. Odpowiedzialność
+za zwolnienie tak uzyskanej pamięci nigdy nie przechodzi na wołaną funkcję.</p>
+
+<p>Przy niektórych funkcjach <em>argumenty przechodzą na własność</em> funkcji wołanej.
+Jest to zaznaczone w komentarzu opisującym daną funkcję. Funkcja przejmuje
+zawartość pamięci wskazywanej przez przekazany wskaźnik. Zazwyczaj jest to
+pojedyncza struktura (np. <code>Poly</code>, <code>Mono</code>) bądź tablica struktur.</p>
+
+<p>Wynikiem niektórych funkcji jest struktura (np. <code>Poly</code>, <code>Mono</code>). Przyjmujemy tu
+konwencję otrzymywania <em>wyniku na własność</em>, co oznacza, że kod wołający taką
+funkcję otrzymuję zwracaną wartość na własność.</p>
+
+<p>Przykłady przekazywania własności i zwalniania pamięci przez ostatniego
+właściciela:</p>
+
+<pre><code class="C">{
+  Poly p1 = ...
+  PolyDestroy(&amp;p1);
+}
+{
+  Poly p1 = ...
+  Mono m1 = MonoFromPoly(&amp;p1, 7); // przekazanie własności p1
+  MonoDestroy(&amp;m1);
+}
+{
+  Poly p1 = ...
+  Mono m1 = MonoFromPoly(&amp;p1, 7); // przekazanie własności p1
+  Poly p2 = PolyAddMonos(1, &amp;m1); // przekazanie własności m1
+  PolyDestroy(&amp;p2);
+}
+</code></pre>
+
+<h3>Obsługa błędów krytycznych</h3>
+
+<p>Jeśli wystąpi błąd krytyczny, np. zabraknie pamięci, program powinien zakończyć
+się awaryjnie kodem 1. Niezmienniki i warunki wstępne należy sprawdzać za pomocą
+asercji.</p>
